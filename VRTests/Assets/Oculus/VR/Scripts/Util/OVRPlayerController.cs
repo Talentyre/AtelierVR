@@ -305,10 +305,16 @@ public class OVRPlayerController : MonoBehaviour
 
 		if (EnableLinearMovement)
 		{
-			bool moveForward = Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.UpArrow);
-			bool moveLeft = Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.LeftArrow);
+			bool moveForward = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
+			bool moveLeft = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
 			bool moveRight = Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
 			bool moveBack = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
+
+			if (Input.GetButton("Jump"))
+			{
+				Jump();
+			}
+			
 
 			bool dpad_move = false;
 
@@ -332,9 +338,10 @@ public class OVRPlayerController : MonoBehaviour
 				MoveScale = 0.70710678f;
 
 			// No positional movement if we are in the air
+			/*
 			if (!Controller.isGrounded)
 				MoveScale = 0.0f;
-
+*/
 			MoveScale *= SimulationRate * Time.deltaTime;
 
 			// Compute this for key movement
@@ -415,8 +422,12 @@ public class OVRPlayerController : MonoBehaviour
 
 
 #if !UNITY_ANDROID || UNITY_EDITOR
-			if (!SkipMouseRotation)
+			if (!SkipMouseRotation) {
 				euler.y += Input.GetAxis("Mouse X") * rotateInfluence * 3.25f;
+				euler.x += -Input.GetAxis("Mouse Y") * rotateInfluence * 3.25f;
+				
+			}
+				
 #endif
 
 			if (SnapRotation)
